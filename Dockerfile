@@ -52,22 +52,10 @@ RUN \
 
 # php-fpm
 RUN yum -y install php-fpm
-RUN rpm -ivh https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm
-RUN yum -y install nodejs npm jpegoptim
-RUN npm install uglify-js -g
-RUN npm install uglifycss -g
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 RUN sed -i 's/listen = 127.0.0.1:9000/listen = 9000/g' /etc/php-fpm.d/www.conf
 RUN sed -i 's/listen.allowed_clients = 127.0.0.1/;listen.allowed_clients = 127.0.0.1/g' /etc/php-fpm.d/www.conf
-
-ADD docker/php/symfony.ini /etc/php.d/
-ADD docker/php/symfony.ini /etc/php.d/
-
-ADD docker/php/symfony.pool.conf /etc/php-fpm.d/www.conf
-
-#ENV SYMFONY_ENV dev
-#ENV ENVIRONMENT dev
 
 RUN yum clean all
 RUN rm -rf /tmp/*
